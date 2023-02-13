@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAppWebAPI_HIENLTH.Data;
 using MyAppWebAPI_HIENLTH.Models;
@@ -39,6 +40,7 @@ namespace MyAppWebAPI_HIENLTH.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CreateNew(LoaiModel model)
         {
             try
@@ -49,7 +51,7 @@ namespace MyAppWebAPI_HIENLTH.Controllers
                 };
                 _context.Add(loai);
                 _context.SaveChanges();
-                return Ok(loai);
+                return StatusCode(StatusCodes.Status201Created, loai);
             }
             catch
             {
@@ -69,6 +71,23 @@ namespace MyAppWebAPI_HIENLTH.Controllers
                 loai.TenLoai = model.TenLoai;
                 _context.SaveChanges();
                 return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBuId(int id)
+        {
+            var loai = _context.Loais.SingleOrDefault(lo => lo.MaLoai == id);
+            if (loai != null)
+            {
+                _context.Remove(loai);
+                _context.SaveChanges();
+                return StatusCode(StatusCodes.Status200OK);
             }
             else
             {
