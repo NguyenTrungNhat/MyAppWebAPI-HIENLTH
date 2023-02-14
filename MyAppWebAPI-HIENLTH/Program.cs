@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyAppWebAPI_HIENLTH.Data;
+using MyAppWebAPI_HIENLTH.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 });
 
 builder.Services.AddAuthentication();
+
+builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitory>();
+builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitoryInMemory>();
 
 var app = builder.Build();
 
