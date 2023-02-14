@@ -20,8 +20,15 @@ namespace MyAppWebAPI_HIENLTH.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var dsLoai = _context.Loais.ToList();
-            return Ok(dsLoai);
+            try
+            {
+                var dsLoai = _context.Loais.ToList();
+                return Ok(dsLoai);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
