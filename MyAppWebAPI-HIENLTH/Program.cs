@@ -20,6 +20,7 @@ builder.Services.AddAuthentication();
 
 builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitory>();
 builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitoryInMemory>();
+builder.Services.AddScoped<IHangHoaReponsitory, HangHoaReponsitory>();
 
 var app = builder.Build();
 
