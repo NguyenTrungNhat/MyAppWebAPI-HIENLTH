@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAppWebAPI_HIENLTH.Data;
 using MyAppWebAPI_HIENLTH.Models;
@@ -35,7 +34,7 @@ namespace MyAppWebAPI_HIENLTH.Controllers
         public IActionResult GetById(int id)
         {
             var loai = _context.Loais.SingleOrDefault(lo => lo.MaLoai == id);
-            if(loai != null)
+            if (loai != null)
             {
                 return Ok(loai);
             }
@@ -64,13 +63,13 @@ namespace MyAppWebAPI_HIENLTH.Controllers
             {
                 return BadRequest();
             }
-            
+
 
         }
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateById(int id,LoaiModel model)
+        public IActionResult UpdateById(int id, LoaiModel model)
         {
             var loai = _context.Loais.SingleOrDefault(lo => lo.MaLoai == id);
             if (loai != null)
