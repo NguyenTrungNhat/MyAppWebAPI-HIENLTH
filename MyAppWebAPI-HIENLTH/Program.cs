@@ -1,6 +1,11 @@
+using Lucene.Net.Support;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyAppWebAPI_HIENLTH.Data;
+using MyAppWebAPI_HIENLTH.Models;
 using MyAppWebAPI_HIENLTH.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +27,30 @@ builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitory>();
 builder.Services.AddScoped<ILoaiReponsitory, LoaiReponsitoryInMemory>();
 builder.Services.AddScoped<IHangHoaReponsitory, HangHoaReponsitory>();
 
+
+builder.Services.AddOptions();
+builder.Services.Configure<AppSetting>(
+    builder.Configuration.GetSection("AppSettings"));
+
+var secretKey = builder.Configuration["AppSettings:SecretKey"];
+var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        //tự cấp token
+        ValidateIssuer = false,
+        ValidateAudience = false,
+
+        //ký vào token
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
+
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
