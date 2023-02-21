@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAppWebAPI_HIENLTH.Data;
 
@@ -11,9 +12,10 @@ using MyAppWebAPI_HIENLTH.Data;
 namespace MyAppWebAPI_HIENLTH.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230217175927_AddRefreshToken")]
+    partial class AddRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,42 +174,6 @@ namespace MyAppWebAPI_HIENLTH.Migrations
                     b.ToTable("NguoiDung");
                 });
 
-            modelBuilder.Entity("MyAppWebAPI_HIENLTH.Data.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ExpiredAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("IsueAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("JwtId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshToken");
-                });
-
             modelBuilder.Entity("MyAppWebAPI_HIENLTH.Data.DonHangChiTiet", b =>
                 {
                     b.HasOne("MyAppWebAPI_HIENLTH.Data.DonHang", "DonHang")
@@ -234,17 +200,6 @@ namespace MyAppWebAPI_HIENLTH.Migrations
                     b.HasOne("MyAppWebAPI_HIENLTH.Data.Loai", null)
                         .WithMany("HangHoas")
                         .HasForeignKey("LoaiMaLoai");
-                });
-
-            modelBuilder.Entity("MyAppWebAPI_HIENLTH.Data.RefreshToken", b =>
-                {
-                    b.HasOne("MyAppWebAPI_HIENLTH.Data.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NguoiDung");
                 });
 
             modelBuilder.Entity("MyAppWebAPI_HIENLTH.Data.DonHang", b =>

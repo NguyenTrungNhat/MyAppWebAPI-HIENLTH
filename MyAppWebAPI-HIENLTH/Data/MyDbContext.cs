@@ -7,6 +7,7 @@ namespace MyAppWebAPI_HIENLTH.Data
         public MyDbContext(DbContextOptions options) : base(options) { }
 
         #region DBSet
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<HangHoa> HangHoas { get; set; }
         public DbSet<Loai> Loais { get; set; }
